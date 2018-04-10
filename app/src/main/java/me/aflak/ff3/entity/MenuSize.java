@@ -5,5 +5,5 @@ package me.aflak.ff3.entity;
  */
 
 public enum MenuSize{
-    Small, Medium, Large
+    Small, Large, Undefined
 }

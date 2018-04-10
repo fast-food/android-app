@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -25,6 +26,7 @@ public class NfcCardService extends HostApduService {
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(AID);
 
+    private static String REQUEST_HELLO_WORLD = "0";
     private static String REQUEST_MENU = "1";
 
     @Inject ObjectManager objectManager;
@@ -42,14 +44,19 @@ public class NfcCardService extends HostApduService {
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {
         Log.d(TAG, "Received APDU: " + ByteArrayToHexString(commandApdu));
         String stringApdu = new String(commandApdu);
+
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             return ConcatArrays(REQUEST_MENU.getBytes(), SELECT_OK_SW);
         }
-        else if(stringApdu.startsWith(REQUEST_MENU)){
-            Log.d(TAG, stringApdu.substring(1));
+
+        if(stringApdu.startsWith(REQUEST_MENU)){
             Intent intent = new Intent(ACTION_NOTIFY_DATA);
             intent.putExtra(hceData, stringApdu.substring(1));
-            this.sendBroadcast(intent);
+            sendBroadcast(intent);
+            return SELECT_OK_SW;
+        }
+        else if(stringApdu.startsWith(REQUEST_HELLO_WORLD)){
+            Toast.makeText(this, stringApdu.substring(1), Toast.LENGTH_SHORT).show();
             return SELECT_OK_SW;
         }
         else{

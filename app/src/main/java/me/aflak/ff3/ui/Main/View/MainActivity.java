@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Menu;
+import me.aflak.ff3.entity.MenuSize;
 import me.aflak.ff3.ui.Main.Presenter.MainPresenter;
 import me.aflak.ff3.ui.Main.data.DaggerMainComponent;
 import me.aflak.ff3.ui.Main.data.MainModule;
@@ -48,24 +49,34 @@ public class MainActivity extends AppCompatActivity implements MainView {
         presenter.onStart(this);
     }
 
+    String getMenuSizeString(MenuSize size){
+        if(size==MenuSize.Small){
+            return "Small";
+        }
+        else if(size==MenuSize.Large){
+            return "Large";
+        }
+        else{
+            return "null";
+        }
+    }
+
     @Override
     public void showMenu(List<Menu> menuList) {
         StringBuilder builder = new StringBuilder();
         for(Menu menu : menuList){
-            builder.append("Price : ");
-            builder.append(menu.getPrice());
-            builder.append("\n");
-            builder.append("Sandwich : ");
+            builder.append("Menu : ");
             builder.append(menu.getSandwich().getName());
-            builder.append("\n");
-            builder.append("Extra : ");
+            builder.append(", ");
             builder.append(menu.getExtra().getName());
-            builder.append("\n");
-            builder.append("Drink : ");
+            builder.append(", ");
             builder.append(menu.getDrink().getName());
             builder.append("\n");
-            builder.append("Dessert : ");
-            builder.append(menu.getDessert().getName());
+            builder.append("Size : ");
+            builder.append(getMenuSizeString(menu.getSize()));
+            builder.append("\n");
+            builder.append("Price : ");
+            builder.append(menu.getPrice());
             builder.append("\n\n");
         }
         textView.setText(builder.toString());

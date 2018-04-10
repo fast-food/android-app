@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Food {
     @SerializedName("name") private String name;
-    @SerializedName("price") private float price;
+    @SerializedName("id") private int id;
 
-    public Food(String name, float price) {
+    public Food(int id, String name) {
+        this.id = id;
         this.name = name;
-        this.price = price;
     }
 
     public String getName() {
@@ -23,11 +23,11 @@ public class Food {
         this.name = name;
     }
 
-    public float getPrice() {
-        return price;
+    public int getId() {
+        return id;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setId(int id) {
+        this.id = id;
     }
 }

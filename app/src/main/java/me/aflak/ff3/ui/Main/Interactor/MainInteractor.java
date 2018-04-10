@@ -9,5 +9,5 @@ import me.aflak.ff3.entity.Menu;
  */
 
 public interface MainInteractor {
-    List<Menu> parseMenus(String json);
+    List<Menu> parseMenus(String str);
 }

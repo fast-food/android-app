@@ -29,8 +29,8 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainInteractor provideMainInteractor(Gson gson){
-        return new MainInteractorImpl(gson);
+    public MainInteractor provideMainInteractor(){
+        return new MainInteractorImpl();
     }
 
     @Provides @Singleton
