@@ -2,6 +2,7 @@ package me.aflak.ff3.ui.Main.Interactor;
 
 import java.util.List;
 
+import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 
 /**
@@ -10,4 +11,9 @@ import me.aflak.ff3.entity.Menu;
 
 public interface MainInteractor {
     List<Menu> parseMenus(String str);
+    List<Food> parseFood(String str);
+    void saveMenu(List<Menu> menu);
+    void saveFood(List<Food> food);
+    List<Menu> getMenu();
+    List<Food> getFood();
 }

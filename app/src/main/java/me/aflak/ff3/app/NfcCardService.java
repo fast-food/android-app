@@ -16,7 +16,8 @@ import me.aflak.ff3.model.ObjectManager;
 import static me.aflak.ff3.model.NfcUtils.*;
 
 public class NfcCardService extends HostApduService {
-    public static final String ACTION_NOTIFY_DATA = "NOTIFY_HCE_DATA";
+    public static final String ACTION_NOTIFY_MENU = "NOTIFY_HCE_MENU";
+    public static final String ACTION_NOTIFY_FOOD = "NOTIFY_HCE_FOOD";
     public static final String hceData = "hcdData";
 
     private static final String TAG = "NfcCardService";
@@ -26,8 +27,8 @@ public class NfcCardService extends HostApduService {
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(AID);
 
-    private static String REQUEST_HELLO_WORLD = "0";
     private static String REQUEST_MENU = "1";
+    private static String REQUEST_FOOD = "2";
 
     @Inject ObjectManager objectManager;
 
@@ -48,15 +49,12 @@ public class NfcCardService extends HostApduService {
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             return ConcatArrays(REQUEST_MENU.getBytes(), SELECT_OK_SW);
         }
-
-        if(stringApdu.startsWith(REQUEST_MENU)){
-            Intent intent = new Intent(ACTION_NOTIFY_DATA);
-            intent.putExtra(hceData, stringApdu.substring(1));
-            sendBroadcast(intent);
-            return SELECT_OK_SW;
+        else if(stringApdu.startsWith(REQUEST_MENU)){
+            new BroadcastInBackground(stringApdu.substring(REQUEST_MENU.length()), ACTION_NOTIFY_MENU).start();
+            return ConcatArrays(REQUEST_FOOD.getBytes(), SELECT_OK_SW);
         }
-        else if(stringApdu.startsWith(REQUEST_HELLO_WORLD)){
-            Toast.makeText(this, stringApdu.substring(1), Toast.LENGTH_SHORT).show();
+        else if(stringApdu.startsWith(REQUEST_FOOD)){
+            new BroadcastInBackground(stringApdu.substring(REQUEST_FOOD.length()), ACTION_NOTIFY_FOOD).start();
             return SELECT_OK_SW;
         }
         else{
@@ -66,5 +64,23 @@ public class NfcCardService extends HostApduService {
 
     public static byte[] BuildSelectApdu(String aid) {
         return HexStringToByteArray(SELECT_APDU_HEADER + String.format("%02X", aid.length() / 2) + aid);
+    }
+
+    private class BroadcastInBackground extends Thread implements Runnable{
+        private String data;
+        private String action;
+
+        BroadcastInBackground(String data, String action){
+            this.data = data;
+            this.action = action;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            Intent intent = new Intent(action);
+            intent.putExtra(hceData, data);
+            sendBroadcast(intent);
+        }
     }
 }

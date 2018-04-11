@@ -1,17 +1,17 @@
 package me.aflak.ff3.entity;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by Omar on 14/12/2017.
  */
 
 public class Food {
-    @SerializedName("name") private String name;
-    @SerializedName("id") private int id;
+    private String name;
+    private FoodType type;
+    private int id;
 
-    public Food(int id, String name) {
+    public Food(int id, FoodType type, String name) {
         this.id = id;
+        this.type = type;
         this.name = name;
     }
 
@@ -21,6 +21,14 @@ public class Food {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public FoodType getType() {
+        return type;
+    }
+
+    public void setType(FoodType type) {
+        this.type = type;
     }
 
     public int getId() {

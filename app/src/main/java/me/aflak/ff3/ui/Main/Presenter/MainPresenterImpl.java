@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 
+import java.util.List;
+
 import me.aflak.ff3.app.NfcCardService;
+import me.aflak.ff3.entity.Food;
+import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.ui.Main.Interactor.MainInteractor;
 import me.aflak.ff3.ui.Main.View.MainView;
 
@@ -37,7 +41,8 @@ public class MainPresenterImpl implements MainPresenter {
         mainView.showNfcImage(true);
         mainView.showText("");
         IntentFilter hceNotificationsFilter = new IntentFilter();
-        hceNotificationsFilter.addAction(NfcCardService.ACTION_NOTIFY_DATA);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_NOTIFY_MENU);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_NOTIFY_FOOD);
         context.registerReceiver(hceNotificationsReceiver, hceNotificationsFilter);
     }
 
@@ -49,11 +54,27 @@ public class MainPresenterImpl implements MainPresenter {
     private BroadcastReceiver hceNotificationsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getExtras()!=null) {
-                String data = intent.getStringExtra(NfcCardService.hceData);
-                mainView.showNfcImage(false);
-                mainView.showMenu(mainInteractor.parseMenus(data));
+            String action = intent.getAction();
+            if(action!=null){
+                if(action.equals(NfcCardService.ACTION_NOTIFY_MENU)){
+                    if(intent.getExtras()!=null) {
+                        String data = intent.getStringExtra(NfcCardService.hceData);
+                        mainView.showNfcImage(false);
+                        List<Menu> menu = mainInteractor.parseMenus(data);
+                        mainInteractor.saveMenu(menu);
+                        mainView.showMenu(menu);
+                    }
+                }
+                else if(action.equals(NfcCardService.ACTION_NOTIFY_FOOD)){
+                    if (intent.getExtras()!=null) {
+                        String data = intent.getStringExtra(NfcCardService.hceData);
+                        mainView.showNfcImage(false);
+                        List<Food> food = mainInteractor.parseFood(data);
+                        mainInteractor.saveFood(food);
+                    }
+                }
             }
+
         }
     };
 }

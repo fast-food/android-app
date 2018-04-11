@@ -1,11 +1,10 @@
 package me.aflak.ff3.ui.Main.data;
 
-import com.google.gson.Gson;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.aflak.ff3.model.ObjectManager;
 import me.aflak.ff3.ui.Main.Interactor.MainInteractor;
 import me.aflak.ff3.ui.Main.Interactor.MainInteractorImpl;
 import me.aflak.ff3.ui.Main.Presenter.MainPresenter;
@@ -29,8 +28,8 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainInteractor provideMainInteractor(){
-        return new MainInteractorImpl();
+    public MainInteractor provideMainInteractor(ObjectManager objectManager){
+        return new MainInteractorImpl(objectManager);
     }
 
     @Provides @Singleton

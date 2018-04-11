@@ -1,45 +1,79 @@
 package me.aflak.ff3.ui.Main.Interactor;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import me.aflak.ff3.entity.Food;
+import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
-import me.aflak.ff3.entity.MenuSize;
+import me.aflak.ff3.model.ObjectManager;
 
 /**
  * Created by Omar on 07/10/2017.
  */
 
 public class MainInteractorImpl implements MainInteractor{
-    public MainInteractorImpl() {
+    private ObjectManager objectManager;
+
+    public MainInteractorImpl(ObjectManager objectManager) {
+        this.objectManager = objectManager;
     }
 
-    private Food getFood(String str){
-        String lines[] = str.split(" ");
-        if(lines.length==2) {
-            return new Food(Integer.valueOf(lines[0]), lines[1]);
+    @Override
+    public List<Food> parseFood(String str) {
+        List<Food> food = new ArrayList<>();
+        String[] lines = str.split("\n");
+        int length = Integer.valueOf(lines[0]);
+        lines = lines[1].split(" ");
+
+        int p=0;
+        for(int i=0 ; i<length ; i++){
+            int id = Integer.valueOf(lines[p++]);
+            FoodType type = FoodType.values()[Integer.valueOf(lines[p++])];
+            String name = lines[p++];
+            food.add(new Food(id, type, name));
         }
-        return null;
+
+        return food;
     }
 
     @Override
     public List<Menu> parseMenus(String str) {
         List<Menu> menus = new ArrayList<>();
         String[] lines = str.split("\n");
-        int p = 0;
+        int length = Integer.valueOf(lines[0]);
+        lines = lines[1].split(" ");
 
-        int length = Integer.valueOf(lines[p++]);
+        int p=0;
         for(int i=0 ; i<length ; i++){
             float price = Float.valueOf(lines[p++]);
-            MenuSize size = MenuSize.values()[Integer.valueOf(lines[p++])];
-            Food sandwich = getFood(lines[p++]);
-            Food extra = getFood(lines[p++]);
-            Food drink = getFood(lines[p++]);
-            menus.add(new Menu(size, sandwich, extra, drink, price));
+            int count = Integer.valueOf(lines[p++]);
+            Menu m = new Menu(price);
+            for(int j=0 ; j<count ; j++){
+                m.addType(FoodType.values()[Integer.valueOf(lines[p++])]);
+            }
+            menus.add(m);
         }
         return menus;
+    }
+
+    @Override
+    public void saveMenu(List<Menu> menu) {
+        objectManager.put("menus", menu);
+    }
+
+    @Override
+    public void saveFood(List<Food> food) {
+        objectManager.put("food", food);
+    }
+
+    @Override
+    public List<Menu> getMenu() {
+        return objectManager.get("menus", null);
+    }
+
+    @Override
+    public List<Food> getFood() {
+        return objectManager.get("food", null);
     }
 }
