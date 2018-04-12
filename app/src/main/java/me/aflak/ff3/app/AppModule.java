@@ -2,6 +2,7 @@ package me.aflak.ff3.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -42,5 +43,10 @@ public class AppModule {
     @Provides @Singleton
     public ObjectManager provideObjectManager(SharedPreferences sharedPreferences, Context context, Gson gson){
         return new ObjectManager(sharedPreferences, context.getResources(), gson);
+    }
+
+    @Provides @Singleton
+    public Typeface provideTypeface(Context context){
+        return Typeface.createFromAsset(context.getAssets(), "font/insanibu.ttf");
     }
 }

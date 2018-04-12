@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -33,6 +34,7 @@ import me.aflak.ff3.entity.Menu;
 public class GridViewAdapter extends ArrayAdapter<Menu> {
     private LayoutInflater inflater;
     private static int[] colors;
+    private static List<Integer> pickedColors;
     private static Random random;
 
     public GridViewAdapter(@NonNull Context context, int resource) {
@@ -68,6 +70,7 @@ public class GridViewAdapter extends ArrayAdapter<Menu> {
     private void init(Context context){
         inflater = LayoutInflater.from(context);
         colors = context.getResources().getIntArray(R.array.rainbow);
+        pickedColors = new ArrayList<>();
         random = new Random();
     }
 
@@ -146,7 +149,10 @@ public class GridViewAdapter extends ArrayAdapter<Menu> {
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
-            color = colors[random.nextInt(colors.length)];
+            int c;
+            while(pickedColors.contains((c = random.nextInt(colors.length))));
+            color = colors[c];
+            pickedColors.add(c);
         }
     }
 }

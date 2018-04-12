@@ -1,11 +1,13 @@
 package me.aflak.ff3.ui.Main.View;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -25,10 +27,12 @@ import me.aflak.ff3.ui.Main.data.MainModule;
 public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.activity_main_grid) GridView gridView;
     @BindView(R.id.activity_main_logo) ImageView logo;
+    @BindView(R.id.activity_main_help) TextView help;
     @BindView(R.id.activity_main_tap_layout) RelativeLayout tapLayout;
 
     @Inject MainPresenter presenter;
     @Inject GridViewAdapter adapter;
+    @Inject Typeface font;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .mainModule(new MainModule(this))
                 .build().inject(this);
 
+        init();
         presenter.onCreate();
         presenter.checkForNfc(getApplicationContext());
+    }
+
+    void init(){
+        help.setTypeface(font);
         gridView.setAdapter(adapter);
     }
 
