@@ -8,6 +8,7 @@ import android.content.Context;
 
 public interface MainPresenter {
     void checkForNfc(Context context);
+    void onCreate();
     void onStart(Context context);
     void onStop(Context context);
 }

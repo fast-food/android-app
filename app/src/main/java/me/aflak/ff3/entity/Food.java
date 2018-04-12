@@ -38,4 +38,19 @@ public class Food {
     public void setId(int id) {
         this.id = id;
     }
+
+    public static String toString(FoodType type){
+        switch (type){
+            case SANDWICH:
+                return "Sandwich";
+            case DRINK:
+                return "Drink";
+            case EXTRA:
+                return "Extra";
+            case DESERT:
+                return "Desert";
+            default:
+                return "UNDEFINED";
+        }
+    }
 }

@@ -2,10 +2,10 @@ package me.aflak.ff3.ui.Main.View;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -16,17 +16,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
-import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.ui.Main.Presenter.MainPresenter;
+import me.aflak.ff3.ui.Main.adapter.GridViewAdapter;
 import me.aflak.ff3.ui.Main.data.DaggerMainComponent;
 import me.aflak.ff3.ui.Main.data.MainModule;
 
 public class MainActivity extends AppCompatActivity implements MainView {
-    @BindView(R.id.activity_main_text) TextView textView;
-    @BindView(R.id.activity_main_nfc) ImageView nfcImage;
+    @BindView(R.id.activity_main_grid) GridView gridView;
+    @BindView(R.id.activity_main_logo) ImageView logo;
+    @BindView(R.id.activity_main_tap_layout) RelativeLayout tapLayout;
 
     @Inject MainPresenter presenter;
+    @Inject GridViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .mainModule(new MainModule(this))
                 .build().inject(this);
 
-        textView.setMovementMethod(new ScrollingMovementMethod());
+        presenter.onCreate();
         presenter.checkForNfc(getApplicationContext());
+        gridView.setAdapter(adapter);
     }
 
     @Override
@@ -51,29 +54,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showMenu(List<Menu> menuList) {
-        StringBuilder builder = new StringBuilder();
-        for(Menu menu : menuList){
-            builder.append("Menu : ");
-            builder.append(menu.getPrice());
-            builder.append("\n");
-            builder.append("Food Type : ");
-            for(FoodType t : menu.getTypes()){
-                builder.append(t);
-                builder.append(", ");
-            }
-            builder.append("\n\n");
-        }
-        textView.setText(builder.toString());
+        adapter.addAll(menuList);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showText(String data) {
-        textView.setText(data);
+    public void clearMenu() {
+        adapter.clear();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void showNfcImage(boolean state) {
-        nfcImage.setVisibility(state?View.VISIBLE:View.GONE);
+        tapLayout.setVisibility(state?View.VISIBLE:View.GONE);
     }
 
     @Override

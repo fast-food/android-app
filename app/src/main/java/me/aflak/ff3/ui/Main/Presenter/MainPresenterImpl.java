@@ -37,9 +37,12 @@ public class MainPresenterImpl implements MainPresenter {
     }
 
     @Override
-    public void onStart(Context context) {
+    public void onCreate() {
         mainView.showNfcImage(true);
-        mainView.showText("");
+    }
+
+    @Override
+    public void onStart(Context context) {
         IntentFilter hceNotificationsFilter = new IntentFilter();
         hceNotificationsFilter.addAction(NfcCardService.ACTION_NOTIFY_MENU);
         hceNotificationsFilter.addAction(NfcCardService.ACTION_NOTIFY_FOOD);
@@ -59,22 +62,22 @@ public class MainPresenterImpl implements MainPresenter {
                 if(action.equals(NfcCardService.ACTION_NOTIFY_MENU)){
                     if(intent.getExtras()!=null) {
                         String data = intent.getStringExtra(NfcCardService.hceData);
-                        mainView.showNfcImage(false);
                         List<Menu> menu = mainInteractor.parseMenus(data);
                         mainInteractor.saveMenu(menu);
+                        mainView.showNfcImage(false);
+                        mainView.clearMenu();
                         mainView.showMenu(menu);
                     }
                 }
                 else if(action.equals(NfcCardService.ACTION_NOTIFY_FOOD)){
                     if (intent.getExtras()!=null) {
                         String data = intent.getStringExtra(NfcCardService.hceData);
-                        mainView.showNfcImage(false);
                         List<Food> food = mainInteractor.parseFood(data);
+                        mainView.showNfcImage(false);
                         mainInteractor.saveFood(food);
                     }
                 }
             }
-
         }
     };
 }

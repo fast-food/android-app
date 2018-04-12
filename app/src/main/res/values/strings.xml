@@ -4,4 +4,6 @@
     <string name="activity_main_first_name">First Name</string>
     <string name="activity_main_last_name">Last Name</string>
     <string name="activity_main_save">Save</string>
+
+    <string name="activity_main_help">Tap to get menu !</string>
 </resources>

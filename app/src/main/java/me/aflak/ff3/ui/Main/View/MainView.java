@@ -10,7 +10,7 @@ import me.aflak.ff3.entity.Menu;
 
 public interface MainView {
     void showMenu(List<Menu> menuList);
-    void showText(String data);
     void showNfcImage(boolean state);
     void showToast(String message);
+    void clearMenu();
 }
