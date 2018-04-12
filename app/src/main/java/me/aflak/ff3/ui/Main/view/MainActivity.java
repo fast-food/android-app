@@ -1,5 +1,6 @@
 package me.aflak.ff3.ui.Main.view;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,10 +23,11 @@ import butterknife.ButterKnife;
 import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Menu;
+import me.aflak.ff3.ui.Main.adapter.MainGridViewAdapter;
 import me.aflak.ff3.ui.Main.presenter.MainPresenter;
-import me.aflak.ff3.ui.Main.adapter.GridViewAdapter;
 import me.aflak.ff3.ui.Main.data.DaggerMainComponent;
 import me.aflak.ff3.ui.Main.data.MainModule;
+import me.aflak.ff3.ui.Menu.view.SelectMenuActivity;
 
 public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.activity_main_grid) GridView gridView;
@@ -32,8 +36,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.activity_main_tap_layout) RelativeLayout tapLayout;
 
     @Inject MainPresenter presenter;
-    @Inject GridViewAdapter adapter;
+    @Inject MainGridViewAdapter adapter;
     @Inject Typeface font;
+    @Inject Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     void init(){
         help.setTypeface(font);
         gridView.setAdapter(adapter);
-        adapter.setOnMenuClickListener(onMenuClickListener);
+        adapter.setOnMenuClickListener(presenter::onMenuClick);
     }
 
     @Override
@@ -93,10 +98,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void navigateToMenu(Menu menu) {
-        Log.d("PRESSED", menu.getPrice()+"");
+        Intent intent = new Intent(this, SelectMenuActivity.class);
+        intent.putExtra("menu", gson.toJson(menu));
+        startActivity(intent);
     }
-
-    private GridViewAdapter.OnMenuClickListener onMenuClickListener = menu -> {
-        presenter.onMenuClick(menu);
-    };
 }

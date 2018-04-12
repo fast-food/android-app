@@ -9,12 +9,12 @@ import dagger.Provides;
 import me.aflak.ff3.R;
 import me.aflak.ff3.app.NfcRequest;
 import me.aflak.ff3.model.ObjectManager;
+import me.aflak.ff3.ui.Main.adapter.MainGridViewAdapter;
 import me.aflak.ff3.ui.Main.interactor.MainInteractor;
 import me.aflak.ff3.ui.Main.interactor.MainInteractorImpl;
 import me.aflak.ff3.ui.Main.presenter.MainPresenter;
 import me.aflak.ff3.ui.Main.presenter.MainPresenterImpl;
 import me.aflak.ff3.ui.Main.view.MainView;
-import me.aflak.ff3.ui.Main.adapter.GridViewAdapter;
 
 /**
  * Created by Omar on 07/10/2017.
@@ -43,7 +43,7 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public GridViewAdapter provideGridViewAdapter(Context context){
-        return new GridViewAdapter(context, R.layout.activity_main_grid_item);
+    public MainGridViewAdapter provideGridViewAdapter(Context context){
+        return new MainGridViewAdapter(context, R.layout.activity_main_grid_item);
     }
 }

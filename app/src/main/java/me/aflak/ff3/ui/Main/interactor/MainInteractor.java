@@ -15,7 +15,5 @@ public interface MainInteractor {
     List<Food> parseFood(String str);
     void saveMenu(List<Menu> menu);
     void saveFood(List<Food> food);
-    List<Menu> getMenu();
-    List<Food> getFood();
     NfcRequest getNfcRequest();
 }

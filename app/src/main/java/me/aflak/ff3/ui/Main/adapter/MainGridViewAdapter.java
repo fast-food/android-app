@@ -33,45 +33,19 @@ import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
+import me.aflak.ff3.model.RandHelper;
 
-public class GridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickListener {
+public class MainGridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickListener {
     private LayoutInflater inflater;
-    private int[] colors;
-    private List<Integer> pickedColors;
-    private Random random;
     private OnMenuClickListener onMenuClickListener;
+    private int[] colors;
 
     @Inject Typeface font;
+    @Inject RandHelper randHelper;
 
-    public GridViewAdapter(@NonNull Context context, int resource) {
+    public MainGridViewAdapter(@NonNull Context context, int resource) {
         super(context, resource);
-        init(context);
-
         MyApp.app().appComponent().inject(this);
-    }
-
-    public GridViewAdapter(@NonNull Context context, int resource, int textViewResourceId) {
-        super(context, resource, textViewResourceId);
-        init(context);
-    }
-
-    public GridViewAdapter(@NonNull Context context, int resource, @NonNull Menu[] objects) {
-        super(context, resource, objects);
-        init(context);
-    }
-
-    public GridViewAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull Menu[] objects) {
-        super(context, resource, textViewResourceId, objects);
-        init(context);
-    }
-
-    public GridViewAdapter(@NonNull Context context, int resource, @NonNull List<Menu> objects) {
-        super(context, resource, objects);
-        init(context);
-    }
-
-    public GridViewAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<Menu> objects) {
-        super(context, resource, textViewResourceId, objects);
         init(context);
     }
 
@@ -79,8 +53,7 @@ public class GridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickL
         onMenuClickListener = null;
         inflater = LayoutInflater.from(context);
         colors = context.getResources().getIntArray(R.array.rainbow);
-        pickedColors = new ArrayList<>();
-        random = new Random();
+        randHelper.setMax(colors.length);
     }
 
     private SpannableString getTextFromMenu(Menu menu){
@@ -90,7 +63,8 @@ public class GridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickL
 
         Map<FoodType, Long> counts = menu.getTypes().stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
         for(Map.Entry<FoodType, Long> entry : counts.entrySet()){
-            builder.append(Food.toString(entry.getKey()));
+            String name = getContext().getResources().getString(Food.toString(entry.getKey()));
+            builder.append(name);
             if(entry.getValue()>1){
                 builder.append(" x");
                 builder.append(entry.getValue());
@@ -158,18 +132,15 @@ public class GridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickL
     }
 
     class ViewHolder {
-        @BindView(R.id.gridview_item_square) ImageView view;
-        @BindView(R.id.gridview_item_text) TextView text;
+        @BindView(R.id.activity_main_grid_item_square) ImageView view;
+        @BindView(R.id.activity_main_grid_item_text) TextView text;
         int color;
         int position;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
             text.setTypeface(font);
-            int c;
-            while(pickedColors.contains((c = random.nextInt(colors.length))));
-            color = colors[c];
-            pickedColors.add(c);
+            color = colors[randHelper.nextInt()];
         }
     }
 

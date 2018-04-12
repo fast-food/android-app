@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.Menu.view.SelectMenuActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name="me.aflak.ff3.app.NfcCardService"
             android:exported="true"
             android:permission="android.permission.BIND_NFC_SERVICE">

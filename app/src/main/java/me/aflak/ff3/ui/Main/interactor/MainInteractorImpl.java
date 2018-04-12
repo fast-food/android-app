@@ -71,16 +71,6 @@ public class MainInteractorImpl implements MainInteractor{
     }
 
     @Override
-    public List<Menu> getMenu() {
-        return objectManager.get("menus", null);
-    }
-
-    @Override
-    public List<Food> getFood() {
-        return objectManager.get("food", null);
-    }
-
-    @Override
     public NfcRequest getNfcRequest() {
         return nfcRequest;
     }

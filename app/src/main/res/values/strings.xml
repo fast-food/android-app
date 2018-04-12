@@ -5,5 +5,12 @@
     <string name="activity_main_last_name">Last Name</string>
     <string name="activity_main_save">Save</string>
 
+    <string name="food_sandwich">Sandwich</string>
+    <string name="food_drink">Drink</string>
+    <string name="food_extra">Extra</string>
+    <string name="food_desert">Desert</string>
+    <string name="food_undefined">NULL</string>
+
     <string name="activity_main_help">Tap to get menu !</string>
+    <string name="activity_select_menu_food_dialog_title">Get some food !</string>
 </resources>

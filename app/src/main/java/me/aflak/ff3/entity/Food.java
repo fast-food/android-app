@@ -1,5 +1,9 @@
 package me.aflak.ff3.entity;
 
+import android.content.Context;
+
+import me.aflak.ff3.R;
+
 /**
  * Created by Omar on 14/12/2017.
  */
@@ -39,18 +43,33 @@ public class Food {
         this.id = id;
     }
 
-    public static String toString(FoodType type){
+    public static int toString(FoodType type){
         switch (type){
             case SANDWICH:
-                return "Sandwich";
+                return R.string.food_sandwich;
             case DRINK:
-                return "Drink";
+                return R.string.food_drink;
             case EXTRA:
-                return "Extra";
+                return R.string.food_extra;
             case DESERT:
-                return "Desert";
+                return R.string.food_desert;
             default:
-                return "UNDEFINED";
+                return R.string.food_undefined;
+        }
+    }
+
+    public static int getImage(FoodType type){
+        switch (type){
+            case SANDWICH:
+                return R.drawable.sandwich;
+            case DRINK:
+                return R.drawable.drink;
+            case EXTRA:
+                return R.drawable.extra;
+            case DESERT:
+                return R.drawable.desert;
+            default:
+                return -1;
         }
     }
 }
