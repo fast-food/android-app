@@ -49,4 +49,9 @@ public class AppModule {
     public Typeface provideTypeface(Context context){
         return Typeface.createFromAsset(context.getAssets(), "font/insanibu.ttf");
     }
+
+    @Provides @Singleton
+    public NfcRequest provideNfcRequest(ObjectManager objectManager){
+        return new NfcRequest(objectManager);
+    }
 }

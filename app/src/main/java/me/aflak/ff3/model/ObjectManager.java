@@ -5,6 +5,8 @@ import android.content.res.Resources;
 
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
+
 /**
  * Created by Omar on 07/10/2017.
  */
@@ -31,6 +33,10 @@ public class ObjectManager {
     }
 
     public <T> T get(String key, Class<T> type){
+        return gson.fromJson(sharedPreferences.getString(key, null), type);
+    }
+
+    public <T> T get(String key, Type type){
         return gson.fromJson(sharedPreferences.getString(key, null), type);
     }
 

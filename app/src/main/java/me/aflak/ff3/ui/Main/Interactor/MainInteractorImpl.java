@@ -3,6 +3,8 @@ package me.aflak.ff3.ui.Main.Interactor;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.aflak.ff3.app.NfcCardService;
+import me.aflak.ff3.app.NfcRequest;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
@@ -14,9 +16,11 @@ import me.aflak.ff3.model.ObjectManager;
 
 public class MainInteractorImpl implements MainInteractor{
     private ObjectManager objectManager;
+    private NfcRequest nfcRequest;
 
-    public MainInteractorImpl(ObjectManager objectManager) {
+    public MainInteractorImpl(ObjectManager objectManager, NfcRequest nfcRequest) {
         this.objectManager = objectManager;
+        this.nfcRequest = nfcRequest;
     }
 
     @Override
@@ -75,5 +79,10 @@ public class MainInteractorImpl implements MainInteractor{
     @Override
     public List<Food> getFood() {
         return objectManager.get("food", null);
+    }
+
+    @Override
+    public NfcRequest getNfcRequest() {
+        return nfcRequest;
     }
 }

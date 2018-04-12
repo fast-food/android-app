@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,9 +17,20 @@ import me.aflak.ff3.model.ObjectManager;
 import static me.aflak.ff3.model.NfcUtils.*;
 
 public class NfcCardService extends HostApduService {
+    public static final String ACTION_NOTIFY_SELECT = "NOTIFY_HCE_SELECT";
     public static final String ACTION_NOTIFY_MENU = "NOTIFY_HCE_MENU";
     public static final String ACTION_NOTIFY_FOOD = "NOTIFY_HCE_FOOD";
     public static final String hceData = "hcdData";
+
+    public static Character REQUEST_SELECT = '0';
+    public static Character REQUEST_MENU = '1';
+    public static Character REQUEST_FOOD = '2';
+
+    public static Map<Character, String> REQUEST_ACTION_MAP = new HashMap<Character, String>()
+    {{
+        put(REQUEST_MENU, ACTION_NOTIFY_MENU);
+        put(REQUEST_FOOD, ACTION_NOTIFY_FOOD);
+    }};
 
     private static final String TAG = "NfcCardService";
     private static final String AID = "F222222222";
@@ -26,10 +39,7 @@ public class NfcCardService extends HostApduService {
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(AID);
 
-    private static String REQUEST_MENU = "1";
-    private static String REQUEST_FOOD = "2";
-
-    @Inject ObjectManager objectManager;
+    @Inject NfcRequest nfcRequest;
 
     @Override
     public void onCreate() {
@@ -45,16 +55,19 @@ public class NfcCardService extends HostApduService {
         Log.d(TAG, "Received APDU: " + ByteArrayToHexString(commandApdu));
         String stringApdu = new String(commandApdu);
 
-        if (Arrays.equals(SELECT_APDU, commandApdu)) {
-            return ConcatArrays(REQUEST_MENU.getBytes(), SELECT_OK_SW);
-        }
-        else if(stringApdu.startsWith(REQUEST_MENU)){
-            new BroadcastInBackground(stringApdu.substring(REQUEST_MENU.length()), ACTION_NOTIFY_MENU).start();
-            return ConcatArrays(REQUEST_FOOD.getBytes(), SELECT_OK_SW);
-        }
-        else if(stringApdu.startsWith(REQUEST_FOOD)){
-            new BroadcastInBackground(stringApdu.substring(REQUEST_FOOD.length()), ACTION_NOTIFY_FOOD).start();
-            return SELECT_OK_SW;
+        // broadcast result
+        Character request = stringApdu.charAt(0);
+        String action = REQUEST_ACTION_MAP.get(request);
+        String data = stringApdu.substring(1);
+        new BroadcastInBackground(data, action).start();
+
+        // send next request if any
+        nfcRequest.load();
+        Character nextRequest = nfcRequest.element();
+        if(nextRequest!=null){
+            nfcRequest.pop();
+            nfcRequest.save();
+            return ConcatArrays(String.valueOf(nextRequest).getBytes(), SELECT_OK_SW);
         }
         else{
             return UNKNOWN_CMD_SW;

@@ -2,6 +2,7 @@ package me.aflak.ff3.ui.Main.Interactor;
 
 import java.util.List;
 
+import me.aflak.ff3.app.NfcRequest;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 
@@ -16,4 +17,5 @@ public interface MainInteractor {
     void saveFood(List<Food> food);
     List<Menu> getMenu();
     List<Food> getFood();
+    NfcRequest getNfcRequest();
 }
