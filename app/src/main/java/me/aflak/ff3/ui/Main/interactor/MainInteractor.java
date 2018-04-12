@@ -1,4 +1,4 @@
-package me.aflak.ff3.ui.Main.Interactor;
+package me.aflak.ff3.ui.Main.interactor;
 
 import java.util.List;
 

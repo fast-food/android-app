@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,23 +24,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
 
-public class GridViewAdapter extends ArrayAdapter<Menu> {
+public class GridViewAdapter extends ArrayAdapter<Menu> implements View.OnClickListener {
     private LayoutInflater inflater;
-    private static int[] colors;
-    private static List<Integer> pickedColors;
-    private static Random random;
+    private int[] colors;
+    private List<Integer> pickedColors;
+    private Random random;
+    private OnMenuClickListener onMenuClickListener;
+
+    @Inject Typeface font;
 
     public GridViewAdapter(@NonNull Context context, int resource) {
         super(context, resource);
         init(context);
+
+        MyApp.app().appComponent().inject(this);
     }
 
     public GridViewAdapter(@NonNull Context context, int resource, int textViewResourceId) {
@@ -68,6 +76,7 @@ public class GridViewAdapter extends ArrayAdapter<Menu> {
     }
 
     private void init(Context context){
+        onMenuClickListener = null;
         inflater = LayoutInflater.from(context);
         colors = context.getResources().getIntArray(R.array.rainbow);
         pickedColors = new ArrayList<>();
@@ -121,9 +130,11 @@ public class GridViewAdapter extends ArrayAdapter<Menu> {
         } else {
             GridView grid = (GridView) parent;
             int size = grid.getColumnWidth();
-            view = inflater.inflate(R.layout.gridview_item, parent, false);
+            view = inflater.inflate(R.layout.activity_main_grid_item, parent, false);
             view.setLayoutParams(new GridView.LayoutParams(size, size));
+            view.setOnClickListener(this);
             holder = new ViewHolder(view);
+            holder.position = position;
             view.setTag(holder);
         }
 
@@ -137,22 +148,36 @@ public class GridViewAdapter extends ArrayAdapter<Menu> {
         return view;
     }
 
-    static class ViewHolder {
-        @BindView(R.id.gridview_item_square) View view;
+    @Override
+    public void onClick(View view) {
+        ViewHolder holder = (ViewHolder) view.getTag();
+        Menu menu = getItem(holder.position);
+        if(onMenuClickListener!=null){
+            onMenuClickListener.onMenuClick(menu);
+        }
+    }
+
+    class ViewHolder {
+        @BindView(R.id.gridview_item_square) ImageView view;
         @BindView(R.id.gridview_item_text) TextView text;
         int color;
-
-        @OnClick(R.id.gridview_item_square)
-        public void onClick(){
-
-        }
+        int position;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
+            text.setTypeface(font);
             int c;
             while(pickedColors.contains((c = random.nextInt(colors.length))));
             color = colors[c];
             pickedColors.add(c);
         }
+    }
+
+    public void setOnMenuClickListener(OnMenuClickListener onMenuClickListener) {
+        this.onMenuClickListener = onMenuClickListener;
+    }
+
+    public interface OnMenuClickListener{
+        void onMenuClick(Menu menu);
     }
 }

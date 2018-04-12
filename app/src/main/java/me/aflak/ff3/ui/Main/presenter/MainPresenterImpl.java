@@ -1,4 +1,4 @@
-package me.aflak.ff3.ui.Main.Presenter;
+package me.aflak.ff3.ui.Main.presenter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,8 +12,8 @@ import me.aflak.ff3.app.NfcCardService;
 import me.aflak.ff3.app.NfcRequest;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
-import me.aflak.ff3.ui.Main.Interactor.MainInteractor;
-import me.aflak.ff3.ui.Main.View.MainView;
+import me.aflak.ff3.ui.Main.interactor.MainInteractor;
+import me.aflak.ff3.ui.Main.view.MainView;
 
 /**
  * Created by Omar on 07/10/2017.
@@ -58,6 +58,11 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public void onStop(Context context) {
         context.unregisterReceiver(hceNotificationsReceiver);
+    }
+
+    @Override
+    public void onMenuClick(Menu menu) {
+        mainView.navigateToMenu(menu);
     }
 
     private BroadcastReceiver hceNotificationsReceiver = new BroadcastReceiver() {

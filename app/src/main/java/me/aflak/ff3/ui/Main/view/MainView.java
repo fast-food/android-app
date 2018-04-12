@@ -1,4 +1,4 @@
-package me.aflak.ff3.ui.Main.View;
+package me.aflak.ff3.ui.Main.view;
 
 import java.util.List;
 
@@ -13,4 +13,5 @@ public interface MainView {
     void showNfcImage(boolean state);
     void showToast(String message);
     void clearMenu();
+    void navigateToMenu(Menu menu);
 }

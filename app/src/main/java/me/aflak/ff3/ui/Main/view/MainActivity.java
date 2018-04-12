@@ -1,8 +1,9 @@
-package me.aflak.ff3.ui.Main.View;
+package me.aflak.ff3.ui.Main.view;
 
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Menu;
-import me.aflak.ff3.ui.Main.Presenter.MainPresenter;
+import me.aflak.ff3.ui.Main.presenter.MainPresenter;
 import me.aflak.ff3.ui.Main.adapter.GridViewAdapter;
 import me.aflak.ff3.ui.Main.data.DaggerMainComponent;
 import me.aflak.ff3.ui.Main.data.MainModule;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     void init(){
         help.setTypeface(font);
         gridView.setAdapter(adapter);
+        adapter.setOnMenuClickListener(onMenuClickListener);
     }
 
     @Override
@@ -88,4 +90,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onStop();
         presenter.onStop(this);
     }
+
+    @Override
+    public void navigateToMenu(Menu menu) {
+        Log.d("PRESSED", menu.getPrice()+"");
+    }
+
+    private GridViewAdapter.OnMenuClickListener onMenuClickListener = menu -> {
+        presenter.onMenuClick(menu);
+    };
 }
