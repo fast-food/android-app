@@ -13,6 +13,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.aflak.ff3.model.ObjectManager;
 import me.aflak.ff3.model.RandHelper;
+import me.aflak.ff3.service.NfcRequest;
 
 /**
  * Created by Omar on 07/10/2017.

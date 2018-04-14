@@ -3,6 +3,7 @@ package me.aflak.ff3.app;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import me.aflak.ff3.service.NfcCardService;
 import me.aflak.ff3.ui.Main.adapter.MainGridViewAdapter;
 import me.aflak.ff3.ui.Menu.adapter.SelectMenuGridViewAdapter;
 

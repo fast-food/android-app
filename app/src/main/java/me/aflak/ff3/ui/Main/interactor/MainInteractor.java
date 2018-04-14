@@ -2,7 +2,7 @@ package me.aflak.ff3.ui.Main.interactor;
 
 import java.util.List;
 
-import me.aflak.ff3.app.NfcRequest;
+import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 

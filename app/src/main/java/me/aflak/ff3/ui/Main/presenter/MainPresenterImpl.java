@@ -8,8 +8,8 @@ import android.nfc.NfcAdapter;
 
 import java.util.List;
 
-import me.aflak.ff3.app.NfcCardService;
-import me.aflak.ff3.app.NfcRequest;
+import me.aflak.ff3.service.NfcCardService;
+import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.ui.Main.interactor.MainInteractor;
@@ -44,6 +44,7 @@ public class MainPresenterImpl implements MainPresenter {
         nfcRequest.clear();
         nfcRequest.push(NfcCardService.REQUEST_FOOD);
         nfcRequest.push(NfcCardService.REQUEST_MENU);
+//        nfcRequest.push(NfcCardService.REQUEST_TEST);
         nfcRequest.save();
     }
 

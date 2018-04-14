@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.aflak.ff3.R;
-import me.aflak.ff3.app.NfcRequest;
+import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.model.ObjectManager;
 import me.aflak.ff3.ui.Main.adapter.MainGridViewAdapter;
 import me.aflak.ff3.ui.Main.interactor.MainInteractor;

@@ -1,4 +1,4 @@
-package me.aflak.ff3.app;
+package me.aflak.ff3.service;
 
 import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
@@ -12,24 +12,24 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import me.aflak.ff3.MyApp;
-import me.aflak.ff3.model.ObjectManager;
 
 import static me.aflak.ff3.model.NfcUtils.*;
 
 public class NfcCardService extends HostApduService {
-    public static final String ACTION_NOTIFY_SELECT = "NOTIFY_HCE_SELECT";
     public static final String ACTION_NOTIFY_MENU = "NOTIFY_HCE_MENU";
     public static final String ACTION_NOTIFY_FOOD = "NOTIFY_HCE_FOOD";
+    public static final String ACTION_NOTIFY_TEST = "NOTIFY_HCE_TEST";
     public static final String hceData = "hcdData";
 
-    public static Character REQUEST_SELECT = '0';
-    public static Character REQUEST_MENU = '1';
-    public static Character REQUEST_FOOD = '2';
+    public static Byte REQUEST_MENU = 0x01;
+    public static Byte REQUEST_FOOD = 0x02;
+    public static Byte REQUEST_TEST = 0x03;
 
-    public static Map<Character, String> REQUEST_ACTION_MAP = new HashMap<Character, String>()
+    public static Map<Byte, String> REQUEST_ACTION_MAP = new HashMap<Byte, String>()
     {{
         put(REQUEST_MENU, ACTION_NOTIFY_MENU);
         put(REQUEST_FOOD, ACTION_NOTIFY_FOOD);
+        put(REQUEST_TEST, ACTION_NOTIFY_TEST);
     }};
 
     private static final String TAG = "NfcCardService";
@@ -53,25 +53,25 @@ public class NfcCardService extends HostApduService {
     @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {
         Log.d(TAG, "Received APDU: " + ByteArrayToHexString(commandApdu));
-        String stringApdu = new String(commandApdu);
+        APDUCmd cmd = APDUCmd.parse(commandApdu);
 
         // broadcast result
-        Character request = stringApdu.charAt(0);
-        String action = REQUEST_ACTION_MAP.get(request);
-        String data = stringApdu.substring(1);
-        new BroadcastInBackground(data, action).start();
+        String action = REQUEST_ACTION_MAP.get(cmd.getCla());
+        if(action!=null){
+            nfcRequest.pop();
+            nfcRequest.save();
+            String data = cmd.getStringData();
+            new BroadcastInBackground(data, action).start();
+        }
 
         // send next request if any
         nfcRequest.load();
-        Character nextRequest = nfcRequest.element();
+        Byte nextRequest = nfcRequest.element();
         if(nextRequest!=null){
-            nfcRequest.pop();
-            nfcRequest.save();
-            return ConcatArrays(String.valueOf(nextRequest).getBytes(), SELECT_OK_SW);
+            return ConcatArrays(new byte[]{nextRequest}, SELECT_OK_SW);
         }
-        else{
-            return UNKNOWN_CMD_SW;
-        }
+
+        return SELECT_OK_SW;
     }
 
     public static byte[] BuildSelectApdu(String aid) {

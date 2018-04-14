@@ -1,4 +1,4 @@
-package me.aflak.ff3.app;
+package me.aflak.ff3.service;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -10,14 +10,14 @@ import me.aflak.ff3.model.ObjectManager;
 
 public class NfcRequest {
     private ObjectManager objectManager;
-    private List<Character> requests;
+    private List<Byte> requests;
 
     public NfcRequest(ObjectManager objectManager){
         this.objectManager = objectManager;
         this.requests = new ArrayList<>();
     }
 
-    public void push(Character character) {
+    public void push(Byte character) {
         requests.add(character);
     }
 
@@ -27,7 +27,7 @@ public class NfcRequest {
         }
     }
 
-    public Character element() {
+    public Byte element() {
         if(!requests.isEmpty()){
             return requests.get(0);
         }
@@ -47,7 +47,7 @@ public class NfcRequest {
     }
 
     public void load(){
-        Type listType = new TypeToken<List<Character>>(){}.getType();
+        Type listType = new TypeToken<List<Byte>>(){}.getType();
         requests = objectManager.get("nfc_requests", listType);
         if(requests==null){
             requests = new ArrayList<>();
