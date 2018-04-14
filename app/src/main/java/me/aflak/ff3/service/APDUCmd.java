@@ -1,5 +1,7 @@
 package me.aflak.ff3.service;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class APDUCmd {
         for(int i=0 ; i<length ; i++){
             cmd.data.add(bytes[5+i]);
         }
-        if(5+cmd.lc<bytes.length){
+        if(5+length<bytes.length){
             cmd.le = bytes[5+length];
         }
 
