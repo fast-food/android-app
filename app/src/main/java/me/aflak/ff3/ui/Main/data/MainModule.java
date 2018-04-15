@@ -2,6 +2,8 @@ package me.aflak.ff3.ui.Main.data;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -33,8 +35,8 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainInteractor provideMainInteractor(ObjectManager objectManager, NfcRequest nfcRequest){
-        return new MainInteractorImpl(objectManager, nfcRequest);
+    public MainInteractor provideMainInteractor(ObjectManager objectManager, NfcRequest nfcRequest, Gson gson){
+        return new MainInteractorImpl(objectManager, nfcRequest, gson);
     }
 
     @Provides @Singleton

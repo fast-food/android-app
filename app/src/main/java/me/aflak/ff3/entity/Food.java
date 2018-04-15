@@ -1,6 +1,6 @@
 package me.aflak.ff3.entity;
 
-import android.content.Context;
+import com.google.gson.annotations.SerializedName;
 
 import me.aflak.ff3.R;
 
@@ -9,9 +9,9 @@ import me.aflak.ff3.R;
  */
 
 public class Food {
-    private String name;
-    private FoodType type;
-    private int id;
+    @SerializedName("id") private int id;
+    @SerializedName("type") private FoodType type;
+    @SerializedName("name") private String name;
 
     public Food(int id, FoodType type, String name) {
         this.id = id;

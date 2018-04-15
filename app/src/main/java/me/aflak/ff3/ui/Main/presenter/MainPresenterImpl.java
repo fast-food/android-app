@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -44,7 +47,6 @@ public class MainPresenterImpl implements MainPresenter {
         nfcRequest.clear();
         nfcRequest.push(NfcCardService.REQUEST_FOOD);
         nfcRequest.push(NfcCardService.REQUEST_MENU);
-//        nfcRequest.push(NfcCardService.REQUEST_TEST);
         nfcRequest.save();
     }
 

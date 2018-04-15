@@ -1,5 +1,9 @@
 package me.aflak.ff3.ui.Main.interactor;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,48 +20,24 @@ import me.aflak.ff3.model.ObjectManager;
 public class MainInteractorImpl implements MainInteractor{
     private ObjectManager objectManager;
     private NfcRequest nfcRequest;
+    private Gson gson;
 
-    public MainInteractorImpl(ObjectManager objectManager, NfcRequest nfcRequest) {
+    public MainInteractorImpl(ObjectManager objectManager, NfcRequest nfcRequest, Gson gson) {
         this.objectManager = objectManager;
         this.nfcRequest = nfcRequest;
+        this.gson = gson;
     }
 
     @Override
     public List<Food> parseFood(String str) {
-        List<Food> food = new ArrayList<>();
-        String[] lines = str.split("\n");
-        int length = Integer.valueOf(lines[0]);
-        lines = lines[1].split(" ");
-
-        int p=0;
-        for(int i=0 ; i<length ; i++){
-            int id = Integer.valueOf(lines[p++]);
-            FoodType type = FoodType.values()[Integer.valueOf(lines[p++])];
-            String name = lines[p++];
-            food.add(new Food(id, type, name));
-        }
-
-        return food;
+        Type listType = new TypeToken<List<Food>>(){}.getType();
+        return gson.fromJson(str, listType);
     }
 
     @Override
     public List<Menu> parseMenus(String str) {
-        List<Menu> menus = new ArrayList<>();
-        String[] lines = str.split("\n");
-        int length = Integer.valueOf(lines[0]);
-        lines = lines[1].split(" ");
-
-        int p=0;
-        for(int i=0 ; i<length ; i++){
-            float price = Float.valueOf(lines[p++]);
-            int count = Integer.valueOf(lines[p++]);
-            Menu m = new Menu(price);
-            for(int j=0 ; j<count ; j++){
-                m.addType(FoodType.values()[Integer.valueOf(lines[p++])]);
-            }
-            menus.add(m);
-        }
-        return menus;
+        Type listType = new TypeToken<List<Menu>>(){}.getType();
+        return gson.fromJson(str, listType);
     }
 
     @Override

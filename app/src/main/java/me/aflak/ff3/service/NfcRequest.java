@@ -17,8 +17,8 @@ public class NfcRequest {
         this.requests = new ArrayList<>();
     }
 
-    public void push(Byte character) {
-        requests.add(character);
+    public void push(Byte b) {
+        requests.add(b);
     }
 
     public void pop() {

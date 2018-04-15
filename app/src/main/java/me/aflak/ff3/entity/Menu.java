@@ -1,11 +1,13 @@
 package me.aflak.ff3.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
-    private float price;
-    private List<FoodType> types;
+    @SerializedName("price") private float price;
+    @SerializedName("food_type") private List<FoodType> types;
 
     public Menu(float price) {
         this.price = price;
