@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">FF3</string>
-    <string name="key_message">message</string>
-    <string name="activity_main_first_name">First Name</string>
-    <string name="activity_main_last_name">Last Name</string>
-    <string name="activity_main_save">Save</string>
+    <string name="server_base_url">http://127.0.0.1:8080</string>
+    <string name="server_uri_food">/food</string>
+    <string name="server_uri_menu">/menu</string>
+    <string name="server_uri_type">/type</string>
 
     <string name="food_sandwich">Sandwich</string>
     <string name="food_drink">Drink</string>

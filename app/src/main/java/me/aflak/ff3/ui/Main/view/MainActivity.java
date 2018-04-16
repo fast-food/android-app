@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .build().inject(this);
 
         init();
-        presenter.onCreate();
+        presenter.onCreate(this);
         presenter.checkForNfc(getApplicationContext());
     }
 

@@ -9,8 +9,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import me.aflak.ff3.R;
-import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.model.ObjectManager;
+import me.aflak.ff3.service.NfcRequestQueue;
 import me.aflak.ff3.ui.Main.adapter.MainGridViewAdapter;
 import me.aflak.ff3.ui.Main.interactor.MainInteractor;
 import me.aflak.ff3.ui.Main.interactor.MainInteractorImpl;
@@ -35,8 +35,8 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainInteractor provideMainInteractor(ObjectManager objectManager, NfcRequest nfcRequest, Gson gson){
-        return new MainInteractorImpl(objectManager, nfcRequest, gson);
+    public MainInteractor provideMainInteractor(ObjectManager objectManager, NfcRequestQueue nfcRequestQueue, Gson gson){
+        return new MainInteractorImpl(objectManager, nfcRequestQueue, gson);
     }
 
     @Provides @Singleton

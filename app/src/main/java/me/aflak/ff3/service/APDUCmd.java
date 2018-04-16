@@ -45,6 +45,15 @@ public class APDUCmd {
         return cmd;
     }
 
+    public byte[] getHeader(){
+        byte[] header = new byte[4];
+        header[0] = cla;
+        header[1] = ins;
+        header[2] = params[0];
+        header[3] = params[1];
+        return header;
+    }
+
     public byte getCla() {
         return cla;
     }

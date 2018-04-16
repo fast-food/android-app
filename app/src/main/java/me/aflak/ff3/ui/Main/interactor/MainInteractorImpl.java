@@ -4,14 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
-import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.entity.Food;
-import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.model.ObjectManager;
+import me.aflak.ff3.service.NfcRequestQueue;
 
 /**
  * Created by Omar on 07/10/2017.
@@ -19,12 +17,12 @@ import me.aflak.ff3.model.ObjectManager;
 
 public class MainInteractorImpl implements MainInteractor{
     private ObjectManager objectManager;
-    private NfcRequest nfcRequest;
+    private NfcRequestQueue nfcRequestQueue;
     private Gson gson;
 
-    public MainInteractorImpl(ObjectManager objectManager, NfcRequest nfcRequest, Gson gson) {
+    public MainInteractorImpl(ObjectManager objectManager, NfcRequestQueue nfcRequestQueue, Gson gson) {
         this.objectManager = objectManager;
-        this.nfcRequest = nfcRequest;
+        this.nfcRequestQueue = nfcRequestQueue;
         this.gson = gson;
     }
 
@@ -51,7 +49,7 @@ public class MainInteractorImpl implements MainInteractor{
     }
 
     @Override
-    public NfcRequest getNfcRequest() {
-        return nfcRequest;
+    public NfcRequestQueue getNfcRequestQueue() {
+        return nfcRequestQueue;
     }
 }

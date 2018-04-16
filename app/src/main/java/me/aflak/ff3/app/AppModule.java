@@ -13,7 +13,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.aflak.ff3.model.ObjectManager;
 import me.aflak.ff3.model.RandHelper;
-import me.aflak.ff3.service.NfcRequest;
+import me.aflak.ff3.service.NfcRequestQueue;
 
 /**
  * Created by Omar on 07/10/2017.
@@ -53,8 +53,8 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    public NfcRequest provideNfcRequest(ObjectManager objectManager){
-        return new NfcRequest(objectManager);
+    public NfcRequestQueue provideNfcRequest(ObjectManager objectManager){
+        return new NfcRequestQueue(objectManager);
     }
 
     @Provides @Singleton

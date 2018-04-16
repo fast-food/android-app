@@ -10,7 +10,7 @@ import me.aflak.ff3.entity.Menu;
 
 public interface MainPresenter {
     void checkForNfc(Context context);
-    void onCreate();
+    void onCreate(Context context);
     void onStart(Context context);
     void onStop(Context context);
     void onMenuClick(Menu menu);
