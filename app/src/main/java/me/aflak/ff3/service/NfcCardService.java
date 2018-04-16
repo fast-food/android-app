@@ -4,11 +4,6 @@ import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -20,6 +15,7 @@ public class NfcCardService extends HostApduService {
     public static final String ACTION_DATA = "me.aflak.ff3.service.NfcCardService.HCE_DATA";
     public static final String ACTION_START = "me.aflak.ff3.service.NfcCardService.HCE_START";
     public static final String ACTION_STOP = "me.aflak.ff3.service.NfcCardService.HCE_STOP";
+    public static final String ACTION_LINK_LOSS = "me.aflak.ff3.service.NfcCardService.HCE_LINK_LOSS";
     public static final String DATA = "hceData";
     public static final String CODE = "hceCode";
 
@@ -42,7 +38,11 @@ public class NfcCardService extends HostApduService {
     }
 
     @Override
-    public void onDeactivated(int reason) {}
+    public void onDeactivated(int reason) {
+        if(reason == HostApduService.DEACTIVATION_LINK_LOSS){
+            broadcastAction(ACTION_LINK_LOSS);
+        }
+    }
 
     @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle extras) {

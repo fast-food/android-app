@@ -2,21 +2,15 @@ package me.aflak.ff3.ui.Main.view;
 
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,12 +85,18 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showNfcImage(boolean state) {
-        tapLayout.setVisibility(state?View.VISIBLE:View.GONE);
+        tapLayout.setVisibility(state?View.VISIBLE:View.INVISIBLE);
     }
 
     @Override
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showToast(int resId) {
+        String str = getResources().getString(resId);
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -124,5 +124,26 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void stopAnimation() {
         logo.setAnimation(null);
+    }
+
+    @Override
+    public void showNfcNotSupportedPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.activity_main_no_nfc_title);
+        builder.setMessage(R.string.activity_main_no_nfc_message);
+        builder.setPositiveButton(R.string.activity_main_no_nfc_button, (dialogInterface, i) -> finish());
+        builder.show();
+    }
+
+    @Override
+    public void showEnableNfcPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.activity_main_enable_nfc_title);
+        builder.setMessage(R.string.activity_main_enable_nfc_message);
+        builder.setPositiveButton(R.string.activity_main_enable_nfc_button, (dialogInterface, i) -> {
+            startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
+
+        });
+        builder.show();
     }
 }

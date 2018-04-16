@@ -12,8 +12,11 @@ public interface MainView {
     void showMenu(List<Menu> menuList);
     void showNfcImage(boolean state);
     void showToast(String message);
+    void showToast(int resId);
     void clearMenu();
     void navigateToMenu(Menu menu);
     void startAnimation();
     void stopAnimation();
+    void showNfcNotSupportedPopup();
+    void showEnableNfcPopup();
 }

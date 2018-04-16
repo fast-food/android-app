@@ -5,6 +5,16 @@
     <string name="server_uri_menu">/menu</string>
     <string name="server_uri_type">/type</string>
 
+    <string name="activity_main_connection_lost">Connection lost! Put your phone over the TAG.</string>
+
+    <string name="activity_main_no_nfc_title">Oops!</string>
+    <string name="activity_main_no_nfc_message">It seems your device does not support NFC.</string>
+    <string name="activity_main_no_nfc_button">OK</string>
+
+    <string name="activity_main_enable_nfc_title">NFC</string>
+    <string name="activity_main_enable_nfc_message">This app needs NFC enabled to work properly. Press OK to go to settings.</string>
+    <string name="activity_main_enable_nfc_button">OK</string>
+
     <string name="food_sandwich">Sandwich</string>
     <string name="food_drink">Drink</string>
     <string name="food_extra">Extra</string>

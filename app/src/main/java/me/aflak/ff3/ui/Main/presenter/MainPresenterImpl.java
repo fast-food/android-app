@@ -24,18 +24,24 @@ import me.aflak.ff3.ui.Main.view.MainView;
 public class MainPresenterImpl implements MainPresenter {
     private MainView mainView;
     private MainInteractor mainInteractor;
+    private boolean hasAllData;
 
     public MainPresenterImpl(MainView mainView, MainInteractor mainInteractor) {
         this.mainView = mainView;
         this.mainInteractor = mainInteractor;
+        this.hasAllData = false;
     }
 
     @Override
     public void checkForNfc(Context context) {
         NfcAdapter nfc = NfcAdapter.getDefaultAdapter(context);
-        if (!nfc.isEnabled()) {
-            mainView.showToast("Please activate NFC");
-            context.startActivity(new Intent(android.provider.Settings.ACTION_NFC_SETTINGS));
+        if(nfc!=null){
+            if (!nfc.isEnabled()) {
+                mainView.showEnableNfcPopup();
+            }
+        }
+        else{
+            mainView.showNfcNotSupportedPopup();
         }
     }
 
@@ -59,6 +65,7 @@ public class MainPresenterImpl implements MainPresenter {
         hceNotificationsFilter.addAction(NfcCardService.ACTION_DATA);
         hceNotificationsFilter.addAction(NfcCardService.ACTION_START);
         hceNotificationsFilter.addAction(NfcCardService.ACTION_STOP);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_LINK_LOSS);
         context.registerReceiver(hceNotificationsReceiver, hceNotificationsFilter);
     }
 
@@ -104,6 +111,13 @@ public class MainPresenterImpl implements MainPresenter {
                 }
                 else if(action.equals(NfcCardService.ACTION_STOP)){
                     mainView.stopAnimation();
+                    hasAllData = true;
+                }
+                else if(action.equals(NfcCardService.ACTION_LINK_LOSS)){
+                    if(!hasAllData){
+                        mainView.stopAnimation();
+                        mainView.showToast(R.string.activity_main_connection_lost);
+                    }
                 }
             }
         }
