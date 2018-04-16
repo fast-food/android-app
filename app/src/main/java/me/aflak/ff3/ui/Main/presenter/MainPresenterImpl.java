@@ -45,11 +45,9 @@ public class MainPresenterImpl implements MainPresenter {
         String baseUrl = context.getResources().getString(R.string.server_base_url);
         String foodUri = context.getResources().getString(R.string.server_uri_food);
         String menuUri = context.getResources().getString(R.string.server_uri_menu);
-        String typeUri = context.getResources().getString(R.string.server_uri_type);
 
         NfcRequestQueue queue = mainInteractor.getNfcRequestQueue();
         queue.clear();
-        queue.push(new NfcRequest(baseUrl+typeUri, 0));
         queue.push(new NfcRequest(baseUrl+foodUri, 1));
         queue.push(new NfcRequest(baseUrl+menuUri, 2));
         queue.save();
@@ -58,7 +56,9 @@ public class MainPresenterImpl implements MainPresenter {
     @Override
     public void onStart(Context context) {
         IntentFilter hceNotificationsFilter = new IntentFilter();
-        hceNotificationsFilter.addAction(NfcCardService.ACTION);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_DATA);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_START);
+        hceNotificationsFilter.addAction(NfcCardService.ACTION_STOP);
         context.registerReceiver(hceNotificationsReceiver, hceNotificationsFilter);
     }
 
@@ -76,26 +76,34 @@ public class MainPresenterImpl implements MainPresenter {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action!=null && action.equals(NfcCardService.ACTION)){
-                if (intent.getExtras()!=null) {
-                    String json = intent.getStringExtra(NfcCardService.DATA);
-                    int requestCode = intent.getIntExtra(NfcCardService.CODE, -1);
+            if(action!=null){
+                if(action.equals(NfcCardService.ACTION_DATA)){
+                    if(intent.getExtras()!=null) {
+                        String json = intent.getStringExtra(NfcCardService.DATA);
+                        int requestCode = intent.getIntExtra(NfcCardService.CODE, -1);
 
-                    switch (requestCode){
-                        case 0:
-                            break;
-                        case 1:
-                            List<Food> food = mainInteractor.parseFood(json);
-                            mainInteractor.saveFood(food);
-                            break;
-                        case 2:
-                            List<Menu> menu = mainInteractor.parseMenus(json);
-                            mainInteractor.saveMenu(menu);
-                            mainView.showNfcImage(false);
-                            mainView.clearMenu();
-                            mainView.showMenu(menu);
-                            break;
+                        switch (requestCode){
+                            case 0:
+                                break;
+                            case 1:
+                                List<Food> food = mainInteractor.parseFood(json);
+                                mainInteractor.saveFood(food);
+                                break;
+                            case 2:
+                                List<Menu> menu = mainInteractor.parseMenus(json);
+                                mainInteractor.saveMenu(menu);
+                                mainView.showNfcImage(false);
+                                mainView.clearMenu();
+                                mainView.showMenu(menu);
+                                break;
+                        }
                     }
+                }
+                else if(action.equals(NfcCardService.ACTION_START)){
+                    mainView.startAnimation();
+                }
+                else if(action.equals(NfcCardService.ACTION_STOP)){
+                    mainView.stopAnimation();
                 }
             }
         }

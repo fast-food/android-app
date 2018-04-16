@@ -1,7 +1,5 @@
 package me.aflak.ff3.service;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -14,4 +14,6 @@ public interface MainView {
     void showToast(String message);
     void clearMenu();
     void navigateToMenu(Menu menu);
+    void startAnimation();
+    void stopAnimation();
 }

@@ -17,7 +17,9 @@ import me.aflak.ff3.MyApp;
 import static me.aflak.ff3.model.NfcUtils.*;
 
 public class NfcCardService extends HostApduService {
-    public static final String ACTION = "me.aflak.ff3.service.NfcCardService.HCE_DATA";
+    public static final String ACTION_DATA = "me.aflak.ff3.service.NfcCardService.HCE_DATA";
+    public static final String ACTION_START = "me.aflak.ff3.service.NfcCardService.HCE_START";
+    public static final String ACTION_STOP = "me.aflak.ff3.service.NfcCardService.HCE_STOP";
     public static final String DATA = "hceData";
     public static final String CODE = "hceCode";
 
@@ -52,6 +54,7 @@ public class NfcCardService extends HostApduService {
             nfcRequest.load();
             lastRequest = nfcRequest.element();
             if(lastRequest!=null){
+                broadcastAction(ACTION_START);
                 return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
             }
 
@@ -62,7 +65,7 @@ public class NfcCardService extends HostApduService {
             // broadcast result
             nfcRequest.pop();
             nfcRequest.save();
-            new BroadcastInBackground(cmd.getStringData(), lastRequest.getCode()).start();
+            broadcastData(cmd.getStringData(), lastRequest.getCode());
 
             // send next request if any
             nfcRequest.load();
@@ -70,6 +73,11 @@ public class NfcCardService extends HostApduService {
             if(lastRequest!=null){
                 return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
             }
+            else{
+                broadcastAction(ACTION_STOP);
+            }
+
+            return SELECT_OK_SW;
         }
         else if(cmd.getParams()[0] == (byte)0x01){
             longMessage += cmd.getStringData();
@@ -81,7 +89,7 @@ public class NfcCardService extends HostApduService {
             // broadcast result
             nfcRequest.pop();
             nfcRequest.save();
-            new BroadcastInBackground(longMessage, lastRequest.getCode()).start();
+            broadcastData(longMessage, lastRequest.getCode());
             longMessage = "";
 
             // send next request if any
@@ -89,6 +97,9 @@ public class NfcCardService extends HostApduService {
             lastRequest = nfcRequest.element();
             if(lastRequest!=null){
                 return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
+            }
+            else{
+                broadcastAction(ACTION_STOP);
             }
 
             return SELECT_OK_SW;
@@ -111,22 +122,15 @@ public class NfcCardService extends HostApduService {
         return true;
     }
 
-    private class BroadcastInBackground extends Thread implements Runnable{
-        private String data;
-        private int requestCode;
+    private void broadcastData(String data, int requestCode){
+        Intent intent = new Intent(ACTION_DATA);
+        intent.putExtra(DATA, data);
+        intent.putExtra(CODE, requestCode);
+        sendBroadcast(intent);
+    }
 
-        BroadcastInBackground(String data, int requestCode){
-            this.data = data;
-            this.requestCode = requestCode;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            Intent intent = new Intent(ACTION);
-            intent.putExtra(DATA, data);
-            intent.putExtra(CODE, requestCode);
-            sendBroadcast(intent);
-        }
+    private void broadcastAction(String action){
+        Intent intent = new Intent(action);
+        sendBroadcast(intent);
     }
 }

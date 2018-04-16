@@ -2,12 +2,21 @@ package me.aflak.ff3.ui.Main.view;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,5 +110,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Intent intent = new Intent(this, SelectMenuActivity.class);
         intent.putExtra("menu", gson.toJson(menu));
         startActivity(intent);
+    }
+
+    @Override
+    public void startAnimation() {
+        RotateAnimation anim = new RotateAnimation(0f, 350f, logo.getPivotX(), logo.getPivotY());
+        anim.setInterpolator(new LinearInterpolator());
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.setDuration(700);
+        logo.startAnimation(anim);
+    }
+
+    @Override
+    public void stopAnimation() {
+        logo.setAnimation(null);
     }
 }

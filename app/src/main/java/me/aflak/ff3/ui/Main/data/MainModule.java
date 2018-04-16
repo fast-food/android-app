@@ -1,6 +1,12 @@
 package me.aflak.ff3.ui.Main.data;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 
