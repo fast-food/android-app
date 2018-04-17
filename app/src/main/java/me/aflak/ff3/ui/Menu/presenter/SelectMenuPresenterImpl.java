@@ -1,10 +1,13 @@
 package me.aflak.ff3.ui.Menu.presenter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
+import me.aflak.ff3.R;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
@@ -21,9 +24,11 @@ public class SelectMenuPresenterImpl implements SelectMenuPresenter {
     }
 
     @Override
-    public void onCreate(Intent intent) {
+    public void onCreate(Activity activity) {
+        Intent intent = activity.getIntent();
         if(intent.getExtras()!=null){
-            String str = intent.getExtras().getString("menu");
+            String key = activity.getResources().getString(R.string.key_intent_menu);
+            String str = intent.getExtras().getString(key);
             Menu menu = selectMenuInteractor.parseMenu(str);
             selectMenuView.showMenu(menu);
         }

@@ -41,8 +41,8 @@ public class MainModule {
     }
 
     @Provides @Singleton
-    public MainInteractor provideMainInteractor(ObjectManager objectManager, NfcRequestQueue nfcRequestQueue, Gson gson){
-        return new MainInteractorImpl(objectManager, nfcRequestQueue, gson);
+    public MainInteractor provideMainInteractor(){
+        return new MainInteractorImpl();
     }
 
     @Provides @Singleton

@@ -84,40 +84,42 @@ public class MainPresenterImpl implements MainPresenter {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if(action!=null){
-                if(action.equals(NfcCardService.ACTION_DATA)){
-                    if(intent.getExtras()!=null) {
-                        String json = intent.getStringExtra(NfcCardService.DATA);
-                        int requestCode = intent.getIntExtra(NfcCardService.CODE, -1);
+                switch (action) {
+                    case NfcCardService.ACTION_DATA:
+                        if (intent.getExtras() != null) {
+                            String json = intent.getStringExtra(NfcCardService.DATA);
+                            int requestCode = intent.getIntExtra(NfcCardService.CODE, -1);
 
-                        switch (requestCode){
-                            case 0:
-                                break;
-                            case 1:
-                                List<Food> food = mainInteractor.parseFood(json);
-                                mainInteractor.saveFood(food);
-                                break;
-                            case 2:
-                                List<Menu> menu = mainInteractor.parseMenus(json);
-                                mainInteractor.saveMenu(menu);
-                                mainView.showNfcImage(false);
-                                mainView.clearMenu();
-                                mainView.showMenu(menu);
-                                break;
+                            switch (requestCode) {
+                                case 0:
+                                    break;
+                                case 1:
+                                    List<Food> food = mainInteractor.parseFood(json);
+                                    mainInteractor.saveFood(food);
+                                    break;
+                                case 2:
+                                    List<Menu> menu = mainInteractor.parseMenus(json);
+                                    mainInteractor.saveMenu(menu);
+                                    mainView.showNfcImage(false);
+                                    mainView.clearMenu();
+                                    mainView.showMenu(menu);
+                                    break;
+                            }
                         }
-                    }
-                }
-                else if(action.equals(NfcCardService.ACTION_START)){
-                    mainView.startAnimation();
-                }
-                else if(action.equals(NfcCardService.ACTION_STOP)){
-                    mainView.stopAnimation();
-                    hasAllData = true;
-                }
-                else if(action.equals(NfcCardService.ACTION_LINK_LOSS)){
-                    if(!hasAllData){
+                        break;
+                    case NfcCardService.ACTION_START:
+                        mainView.startAnimation();
+                        break;
+                    case NfcCardService.ACTION_STOP:
                         mainView.stopAnimation();
-                        mainView.showToast(R.string.activity_main_connection_lost);
-                    }
+                        hasAllData = true;
+                        break;
+                    case NfcCardService.ACTION_LINK_LOSS:
+                        if (!hasAllData) {
+                            mainView.stopAnimation();
+                            mainView.showToast(R.string.activity_main_connection_lost);
+                        }
+                        break;
                 }
             }
         }

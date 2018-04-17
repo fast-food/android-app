@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void navigateToMenu(Menu menu) {
         Intent intent = new Intent(this, SelectMenuActivity.class);
-        intent.putExtra("menu", gson.toJson(menu));
+        intent.putExtra(getResources().getString(R.string.key_intent_menu), gson.toJson(menu));
         startActivity(intent);
     }
 

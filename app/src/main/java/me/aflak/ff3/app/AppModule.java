@@ -2,6 +2,7 @@ package me.aflak.ff3.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 
@@ -30,6 +31,11 @@ public class AppModule {
     @Provides @Singleton
     public Context provideContext(){
         return context;
+    }
+
+    @Provides @Singleton
+    public Resources provideResources(Context context){
+        return context.getResources();
     }
 
     @Provides @Singleton

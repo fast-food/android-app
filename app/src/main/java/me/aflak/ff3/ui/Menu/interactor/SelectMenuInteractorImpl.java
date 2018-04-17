@@ -7,18 +7,24 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import me.aflak.ff3.MyApp;
+import me.aflak.ff3.R;
+import me.aflak.ff3.app.DaggerAppComponent;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.model.ObjectManager;
 
 public class SelectMenuInteractorImpl implements SelectMenuInteractor {
-    private ObjectManager objectManager;
-    private Gson gson;
+    @Inject ObjectManager objectManager;
+    @Inject Gson gson;
 
-    public SelectMenuInteractorImpl(ObjectManager objectManager, Gson gson) {
-        this.objectManager = objectManager;
-        this.gson = gson;
+    public SelectMenuInteractorImpl() {
+        DaggerAppComponent.builder()
+                .appModule(MyApp.app().appModule())
+                .build().inject(this);
     }
 
     @Override
@@ -29,7 +35,7 @@ public class SelectMenuInteractorImpl implements SelectMenuInteractor {
     @Override
     public List<Food> getFoodList(FoodType foodType) {
         Type listType = new TypeToken<List<Food>>(){}.getType();
-        List<Food> food = objectManager.get("food", listType);
+        List<Food> food = objectManager.get(R.string.key_pref_food, listType);
         if(food!=null){
             List<Food> filtered = new ArrayList<>();
             for(Food f : food){

@@ -2,14 +2,11 @@ package me.aflak.ff3.ui.Menu.data;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import me.aflak.ff3.R;
-import me.aflak.ff3.model.ObjectManager;
 import me.aflak.ff3.ui.Menu.adapter.SelectMenuGridViewAdapter;
 import me.aflak.ff3.ui.Menu.interactor.SelectMenuInteractor;
 import me.aflak.ff3.ui.Menu.interactor.SelectMenuInteractorImpl;
@@ -31,8 +28,8 @@ public class SelectMenuModule {
     }
 
     @Provides @Singleton
-    public SelectMenuInteractor provideSelectMenuInteractor(ObjectManager objectManager, Gson gson){
-        return new SelectMenuInteractorImpl(objectManager, gson);
+    public SelectMenuInteractor provideSelectMenuInteractor(){
+        return new SelectMenuInteractorImpl();
     }
 
     @Provides @Singleton

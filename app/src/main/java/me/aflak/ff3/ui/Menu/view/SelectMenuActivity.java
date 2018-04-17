@@ -1,6 +1,5 @@
 package me.aflak.ff3.ui.Menu.view;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -41,7 +40,7 @@ public class SelectMenuActivity extends AppCompatActivity implements SelectMenuV
                 .selectMenuModule(new SelectMenuModule(this))
                 .build().inject(this);
 
-        presenter.onCreate(getIntent());
+        presenter.onCreate(this);
         gridView.setAdapter(adapter);
         adapter.setOnFoodTypeClickListener(presenter::onFoodTypeClick);
     }

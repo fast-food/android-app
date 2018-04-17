@@ -6,6 +6,11 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import me.aflak.ff3.MyApp;
+import me.aflak.ff3.R;
+import me.aflak.ff3.app.DaggerAppComponent;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.model.ObjectManager;
@@ -16,14 +21,14 @@ import me.aflak.ff3.service.NfcRequestQueue;
  */
 
 public class MainInteractorImpl implements MainInteractor{
-    private ObjectManager objectManager;
-    private NfcRequestQueue nfcRequestQueue;
-    private Gson gson;
+    @Inject ObjectManager objectManager;
+    @Inject NfcRequestQueue nfcRequestQueue;
+    @Inject Gson gson;
 
-    public MainInteractorImpl(ObjectManager objectManager, NfcRequestQueue nfcRequestQueue, Gson gson) {
-        this.objectManager = objectManager;
-        this.nfcRequestQueue = nfcRequestQueue;
-        this.gson = gson;
+    public MainInteractorImpl() {
+        DaggerAppComponent.builder()
+                .appModule(MyApp.app().appModule())
+                .build().inject(this);
     }
 
     @Override
@@ -40,12 +45,12 @@ public class MainInteractorImpl implements MainInteractor{
 
     @Override
     public void saveMenu(List<Menu> menu) {
-        objectManager.put("menus", menu);
+        objectManager.put(R.string.key_pref_menus, menu);
     }
 
     @Override
     public void saveFood(List<Food> food) {
-        objectManager.put("food", food);
+        objectManager.put(R.string.key_pref_food, food);
     }
 
     @Override

@@ -43,4 +43,8 @@ public class ObjectManager {
     public <T> T get(int resId, Class<T> type){
         return get(resources.getString(resId), type);
     }
+
+    public <T> T get(int resId, Type type){
+        return get(resources.getString(resId), type);
+    }
 }
