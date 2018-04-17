@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import me.aflak.ff3.MyApp;
 import me.aflak.ff3.R;
-import me.aflak.ff3.app.DaggerAppComponent;
 import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.model.ObjectManager;
@@ -26,9 +25,7 @@ public class MainInteractorImpl implements MainInteractor{
     @Inject Gson gson;
 
     public MainInteractorImpl() {
-        DaggerAppComponent.builder()
-                .appModule(MyApp.app().appModule())
-                .build().inject(this);
+        MyApp.app().appComponent().inject(this);
     }
 
     @Override
