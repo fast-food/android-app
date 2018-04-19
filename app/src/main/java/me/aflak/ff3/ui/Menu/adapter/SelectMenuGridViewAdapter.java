@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -22,10 +24,10 @@ import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.FoodType;
 import me.aflak.ff3.model.RandHelper;
 
-public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> implements View.OnClickListener {
+public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> {
     private LayoutInflater inflater;
-    private OnFoodTypeClickListener onFoodTypeClickListener;
     private int[] colors;
+    private SparseArray<ViewHolder> viewHolders;
 
     @Inject Typeface font;
     @Inject RandHelper randHelper;
@@ -37,10 +39,10 @@ public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> implements
     }
 
     private void init(Context context){
-        onFoodTypeClickListener = null;
         inflater = LayoutInflater.from(context);
         colors = context.getResources().getIntArray(R.array.rainbow);
         randHelper.setMax(colors.length);
+        viewHolders = new SparseArray<>();
     }
 
     @NonNull
@@ -54,10 +56,11 @@ public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> implements
             int size = grid.getColumnWidth();
             view = inflater.inflate(R.layout.activity_select_menu_grid_item, parent, false);
             view.setLayoutParams(new GridView.LayoutParams(size, size));
-            view.setOnClickListener(this);
-            holder = new ViewHolder(view);
-            holder.position = position;
+            holder = new ViewHolder(view, position);
             view.setTag(holder);
+
+            if(viewHolders.get(position, null)==null)
+                viewHolders.put(position, holder);
         }
 
         FoodType foodType = getItem(position);
@@ -72,13 +75,10 @@ public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> implements
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-        ViewHolder holder = (ViewHolder) view.getTag();
-        FoodType foodType = getItem(holder.position);
-        if(onFoodTypeClickListener!=null){
-            onFoodTypeClickListener.onFoodTypeClick(foodType);
-        }
+    public void checkItem(int position, Food food){
+        ViewHolder holder = viewHolders.get(position);
+        holder.text.setText(food.getName());
+        holder.text.setTextColor(holder.color);
     }
 
     class ViewHolder {
@@ -87,18 +87,11 @@ public class SelectMenuGridViewAdapter extends ArrayAdapter<FoodType> implements
         int color;
         int position;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view, int position) {
             ButterKnife.bind(this, view);
             text.setTypeface(font);
-            color = colors[randHelper.nextInt()];
+            this.color = colors[randHelper.nextInt()];
+            this.position = position;
         }
-    }
-
-    public void setOnFoodTypeClickListener(OnFoodTypeClickListener onFoodTypeClickListener) {
-        this.onFoodTypeClickListener = onFoodTypeClickListener;
-    }
-
-    public interface OnFoodTypeClickListener{
-        void onFoodTypeClick(FoodType foodType);
     }
 }

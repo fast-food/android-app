@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportHeight="100"
+    android:viewportWidth="100"
+    android:height="50dp"
+    android:width="50dp">
+
+    <group
+        android:name="check_group"
+        android:pivotX="55"
+        android:pivotY="50"
+        android:rotation="40">
+        <path
+            android:name="check"
+            android:fillColor="@android:color/black"
+            android:pathData="M50,0 60,0 60,100 25,100 25,90 50,90 z"/>
+    </group>
+
+
+</vector>

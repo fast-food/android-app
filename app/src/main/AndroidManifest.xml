@@ -12,9 +12,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/burger"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppThemeNoActionBar">
         <activity android:name="me.aflak.ff3.ui.Main.view.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,7 +23,12 @@
         </activity>
 
         <activity android:name=".ui.Menu.view.SelectMenuActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".ui.Sender.view.SenderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"/>
 
         <service android:name="me.aflak.ff3.service.NfcCardService"
             android:exported="true"

@@ -1,17 +1,23 @@
 <resources>
     <string name="app_name">FF3</string>
-    <string name="server_base_url">http://127.0.0.1:8080</string>
+
+    <!-- SERVER INFO -->
+    <string name="server_base_url">http://192.168.0.23:8080</string>
     <string name="server_uri_food">/food</string>
     <string name="server_uri_menu">/menu</string>
     <string name="server_uri_type">/type</string>
+    <!-- SERVER INFO -->
 
+    <!-- KEYS -->
     <string name="key_pref_menus">menus</string>
     <string name="key_pref_food">food</string>
     <string name="key_intent_menu">menu</string>
+    <string name="key_intent_order">order</string>
+    <!-- KEYS -->
 
     <string name="activity_main_connection_lost">Connection lost! Put your phone over the TAG.</string>
 
-    <string name="activity_main_no_nfc_title">Oops!</string>
+    <string name="activity_main_no_nfc_title">Oops !</string>
     <string name="activity_main_no_nfc_message">It seems your device does not support NFC.</string>
     <string name="activity_main_no_nfc_button">OK</string>
 
@@ -19,12 +25,21 @@
     <string name="activity_main_enable_nfc_message">This app needs NFC enabled to work properly. Press OK to go to settings.</string>
     <string name="activity_main_enable_nfc_button">OK</string>
 
+    <string name="activity_main_help">Tap to get menu !</string>
+
     <string name="food_sandwich">Sandwich</string>
     <string name="food_drink">Drink</string>
     <string name="food_extra">Extra</string>
     <string name="food_desert">Desert</string>
     <string name="food_undefined">NULL</string>
 
-    <string name="activity_main_help">Tap to get menu !</string>
     <string name="activity_select_menu_food_dialog_title">Get some food !</string>
+    <string name="activity_select_menu_food_dialog_button">OK</string>
+    <string name="activity_select_menu_action_title">Select your food</string>
+
+    <string name="activity_select_menu_error_select_title">Oops !</string>
+    <string name="activity_select_menu_error_select_message">You must select a choice for every food.</string>
+    <string name="activity_select_menu_error_select_button">OK</string>
+
+    <string name="activity_sender_help">Tap to send menu !</string>
 </resources>

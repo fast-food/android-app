@@ -5,14 +5,14 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="activity_main_help">#5c6bc0</color>
+    <color name="activity_sender_help">@color/colorAccent</color>
 
     <array name="rainbow">
-        <item>#f06292</item>
-        <item>#7186f7</item>
-        <item>#35f78c</item>
-        <item>#ff6e40</item>
-        <item>#efcf55</item>
-        <item>#64ffda</item>
+        <item>#788bf1</item>
+        <item>#41f291</item>
+        <item>#ff9e80</item>
+        <item>#ecd066</item>
+        <item>#86e4ce</item>
     </array>
 
 </resources>

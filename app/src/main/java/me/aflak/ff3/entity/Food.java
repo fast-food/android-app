@@ -13,10 +13,10 @@ public class Food {
     @SerializedName("type") private FoodType type;
     @SerializedName("name") private String name;
 
-    public Food(int id, FoodType type, String name) {
-        this.id = id;
-        this.type = type;
-        this.name = name;
+    public Food() {
+        this.id = -1;
+        this.type = FoodType.UNDEFINED;
+        this.name = "";
     }
 
     public String getName() {
