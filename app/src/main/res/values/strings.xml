@@ -42,4 +42,5 @@
     <string name="activity_select_menu_error_select_button">OK</string>
 
     <string name="activity_sender_help">Tap to send menu !</string>
+    <string name="activity_sender_connection_lost">Connection lost! Put your phone over the TAG.</string>
 </resources>
