@@ -14,6 +14,7 @@ import me.aflak.ff3.entity.Food;
 import me.aflak.ff3.entity.Menu;
 import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.service.NfcRequestQueue;
+import me.aflak.ff3.service.NfcRequestType;
 import me.aflak.ff3.ui.Main.interactor.MainInteractor;
 import me.aflak.ff3.ui.Main.view.MainView;
 
@@ -54,8 +55,8 @@ public class MainPresenterImpl implements MainPresenter {
 
         NfcRequestQueue queue = mainInteractor.getNfcRequestQueue();
         queue.clear();
-        queue.push(new NfcRequest(baseUrl+foodUri, 1));
-        queue.push(new NfcRequest(baseUrl+menuUri, 2));
+        queue.push(new NfcRequest(NfcRequestType.GET, baseUrl+foodUri), 1);
+        queue.push(new NfcRequest(NfcRequestType.GET, baseUrl+menuUri), 2);
         queue.save();
     }
 

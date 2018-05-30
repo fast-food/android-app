@@ -6,6 +6,9 @@
     <string name="server_uri_food">/food</string>
     <string name="server_uri_menu">/menu</string>
     <string name="server_uri_type">/type</string>
+    <string name="server_uri_order">/order</string>
+
+    <string name="server_order_key">order</string>
     <!-- SERVER INFO -->
 
     <!-- KEYS -->

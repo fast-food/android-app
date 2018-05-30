@@ -1,19 +1,54 @@
 package me.aflak.ff3.service;
 
+import android.util.Pair;
+
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class NfcRequest {
-    private String string;
-    private int code;
+    @SerializedName("type") private int type;
+    @SerializedName("url") private String url;
+    @SerializedName("data") private List<DataPair> data;
 
-    public NfcRequest(String string, int code) {
-        this.string = string;
-        this.code = code;
+    public NfcRequest(int type, String url) {
+        this.type = type;
+        this.url = url;
+        this.data = new ArrayList<>();
     }
 
-    public String getString() {
-        return string;
+    public int getType() {
+        return type;
     }
 
-    public int getCode() {
-        return code;
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<DataPair> getData() {
+        return data;
+    }
+
+    public void addData(String key, String value) {
+        this.data.add(new DataPair(key, value));
+    }
+
+    public static class DataPair{
+        String key;
+        String value;
+
+        DataPair(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }

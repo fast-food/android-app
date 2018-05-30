@@ -15,16 +15,18 @@ import me.aflak.ff3.service.NfcRequestQueue;
 public class SenderInteractorImpl implements SenderInteractor {
     @Inject Resources resources;
     @Inject NfcRequestQueue nfcRequestQueue;
+    @Inject Gson gson;
 
     public SenderInteractorImpl(){
         MyApp.app().appComponent().inject(this);
     }
 
     @Override
-    public String getJsonOrder(Bundle bundle) {
+    public String getOrderJson(Bundle bundle) {
         if(bundle!=null){
             String key = resources.getString(R.string.key_intent_order);
-            return bundle.getString(key, null);
+            Order order = gson.fromJson(bundle.getString(key, null), Order.class);
+            return gson.toJson(order);
         }
         return null;
     }

@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
+
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -27,8 +30,9 @@ public class NfcCardService extends HostApduService {
     private static final byte[] SELECT_APDU = BuildSelectApdu(AID);
 
     private String longMessage;
-    private NfcRequest lastRequest;
+    private NfcRequestQueue.NfcRequestObject lastRequest;
     @Inject NfcRequestQueue nfcRequest;
+    @Inject Gson gson;
 
     @Override
     public void onCreate() {
@@ -55,7 +59,8 @@ public class NfcCardService extends HostApduService {
             lastRequest = nfcRequest.element();
             if(lastRequest!=null){
                 broadcastAction(ACTION_START);
-                return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
+                String data = gson.toJson(lastRequest.request);
+                return ConcatArrays(data.getBytes(), SELECT_OK_SW);
             }
 
             return SELECT_OK_SW;
@@ -65,13 +70,14 @@ public class NfcCardService extends HostApduService {
             // broadcast result
             nfcRequest.pop();
             nfcRequest.save();
-            broadcastData(cmd.getStringData(), lastRequest.getCode());
+            broadcastData(cmd.getStringData(), lastRequest.code);
 
             // send next request if any
             nfcRequest.load();
             lastRequest = nfcRequest.element();
             if(lastRequest!=null){
-                return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
+                String data = gson.toJson(lastRequest.request);
+                return ConcatArrays(data.getBytes(), SELECT_OK_SW);
             }
             else{
                 broadcastAction(ACTION_STOP);
@@ -89,14 +95,15 @@ public class NfcCardService extends HostApduService {
             // broadcast result
             nfcRequest.pop();
             nfcRequest.save();
-            broadcastData(longMessage, lastRequest.getCode());
+            broadcastData(longMessage, lastRequest.code);
             longMessage = "";
 
             // send next request if any
             nfcRequest.load();
             lastRequest = nfcRequest.element();
             if(lastRequest!=null){
-                return ConcatArrays(lastRequest.getString().getBytes(), SELECT_OK_SW);
+                String data = gson.toJson(lastRequest.request);
+                return ConcatArrays(data.getBytes(), SELECT_OK_SW);
             }
             else{
                 broadcastAction(ACTION_STOP);

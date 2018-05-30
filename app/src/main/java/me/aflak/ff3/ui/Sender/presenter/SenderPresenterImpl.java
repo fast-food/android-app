@@ -10,6 +10,7 @@ import me.aflak.ff3.R;
 import me.aflak.ff3.service.NfcCardService;
 import me.aflak.ff3.service.NfcRequest;
 import me.aflak.ff3.service.NfcRequestQueue;
+import me.aflak.ff3.service.NfcRequestType;
 import me.aflak.ff3.ui.Sender.interactor.SenderInteractor;
 import me.aflak.ff3.ui.Sender.view.SenderView;
 
@@ -27,10 +28,17 @@ public class SenderPresenterImpl implements SenderPresenter {
     @Override
     public void onCreate(Activity activity) {
         Intent intent = activity.getIntent();
-        String order = interactor.getJsonOrder(intent.getExtras());
+        String orderJson = interactor.getOrderJson(intent.getExtras());
+
+        String baseUrl = activity.getResources().getString(R.string.server_base_url);
+        String orderUri = activity.getResources().getString(R.string.server_uri_order);
+        String orderKey = activity.getResources().getString(R.string.server_order_key);
+
         NfcRequestQueue queue = interactor.getNfcRequestQueue();
         queue.clear();
-        queue.push(new NfcRequest(order, 1));
+        NfcRequest nfcRequest = new NfcRequest(NfcRequestType.POST, baseUrl+orderUri);
+        nfcRequest.addData(orderKey, orderJson);
+        queue.push(nfcRequest, 1);
         queue.save();
     }
 

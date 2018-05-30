@@ -6,6 +6,6 @@ import me.aflak.ff3.entity.Order;
 import me.aflak.ff3.service.NfcRequestQueue;
 
 public interface SenderInteractor {
-    String getJsonOrder(Bundle bundle);
+    String getOrderJson(Bundle bundle);
     NfcRequestQueue getNfcRequestQueue();
 }
