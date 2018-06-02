@@ -111,6 +111,10 @@ public class NfcCardService extends HostApduService {
 
             return SELECT_OK_SW;
         }
+        else if(nfcRequest.isEmpty()){
+            broadcastAction(ACTION_STOP);
+        }
+
 
         return UNKNOWN_CMD_SW;
     }

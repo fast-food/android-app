@@ -26,6 +26,9 @@
             android:textStyle="bold"
             android:textColor="@color/activity_sender_help"
             android:text="@string/activity_sender_help"
+            android:gravity="center"
+            android:layout_marginStart="30dip"
+            android:layout_marginEnd="30dip"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/activity_sender_logo"
             android:layout_marginTop="32dp"/>

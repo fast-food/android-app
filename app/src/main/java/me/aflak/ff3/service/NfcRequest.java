@@ -1,7 +1,5 @@
 package me.aflak.ff3.service;
 
-import android.util.Pair;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

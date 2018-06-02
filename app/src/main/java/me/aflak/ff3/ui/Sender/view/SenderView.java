@@ -4,4 +4,5 @@ public interface SenderView {
     void startAnimation();
     void stopAnimation();
     void showToast(int resId);
+    void displayWaitingMessage();
 }

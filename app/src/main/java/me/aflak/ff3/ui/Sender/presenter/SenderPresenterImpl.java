@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import me.aflak.ff3.R;
 import me.aflak.ff3.service.NfcCardService;
@@ -70,6 +71,7 @@ public class SenderPresenterImpl implements SenderPresenter {
 
                             switch (requestCode) {
                                 case 1:
+                                    view.displayWaitingMessage();
                                     break;
                             }
                         }

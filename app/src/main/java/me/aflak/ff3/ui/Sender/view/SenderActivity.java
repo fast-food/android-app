@@ -3,6 +3,7 @@ package me.aflak.ff3.ui.Sender.view;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -39,12 +40,8 @@ public class SenderActivity extends AppCompatActivity implements SenderView{
                 .senderModule(new SenderModule(this))
                 .build().inject(this);
 
-        init();
-        presenter.onCreate(this);
-    }
-
-    private void init(){
         help.setTypeface(font);
+        presenter.onCreate(this);
     }
 
     @Override
@@ -77,5 +74,10 @@ public class SenderActivity extends AppCompatActivity implements SenderView{
     public void showToast(int resId) {
         String message = getResources().getString(resId);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displayWaitingMessage() {
+        help.setText(R.string.activity_sender_done_message);
     }
 }

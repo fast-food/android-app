@@ -46,4 +46,5 @@
 
     <string name="activity_sender_help">Tap to send menu !</string>
     <string name="activity_sender_connection_lost">Connection lost! Put your phone over the TAG.</string>
+    <string name="activity_sender_done_message">BigMac is coming…\nWe successfully sent your order ! It is coming soon !</string>
 </resources>
